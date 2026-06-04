@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="768.0" prefWidth="1366.0" style="-fx-background-color: #e8ffd0;" stylesheets="@../../../style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="$CONTROLLER_NAME$">
+   <children>
+      <Pane layoutX="460.0" layoutY="137.0" prefHeight="493.0" prefWidth="445.0" style="-fx-background-color: ffffff;" styleClass="card">
+         <children>
+            <ImageView fitHeight="72.0" fitWidth="294.0" layoutX="76.0" layoutY="37.0">
+               <image>
+                  <Image url="@../../../assets/bf780c16-c3ed-449f-b2ab-6ceda0ca0e53.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="118.0" layoutY="109.0" text="Garbage recycling Reward System">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="131.0" layoutY="167.0" text="Reset password">
+               <font>
+                  <Font name="Arial Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="84.0" layoutY="204.0" text="Enter your official PUP webmail address and">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="124.0" layoutY="222.0" text="we’ll send a verification code for">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="179.0" layoutY="240.0" text="authentication">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="62.0" layoutY="289.0" text="PUP Webmail">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+            </Label>
+            <TextField layoutX="57.0" layoutY="310.0" prefHeight="37.0" prefWidth="335.0" promptText="iskolar@iskolarngbayan.pup.edu.ph" />
+            <Button layoutX="150.0" layoutY="357.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="149.0" style="-fx-background-radius: 30;" text="Send Reset Code">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+               <styleClass>
+                  <String fx:value="card" />
+                  <String fx:value="HBox" />
+               </styleClass>
+            </Button>
+            <Label layoutX="119.0" layoutY="434.0" text="Remembered it?">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="227.0" layoutY="434.0" styleClass="somet" text="Back to Log in">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

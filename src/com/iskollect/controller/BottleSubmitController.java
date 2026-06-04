@@ -24,6 +24,10 @@ public class BottleSubmitController {
         }
         try {
             int bottles = Integer.parseInt(bottleCountField.getText().trim());
+            if (bottles <= 0) {
+                setStatus("Please enter a valid number of bottles.");
+                return;
+            }
             SubmitResult result = bottleService.submitBottles(student.getStudentId(), bottles);
             if (result.isSuccess()) {
                 setStatus("Earned " + result.getTotalPoints() + " pts. Badge: " + result.getNewBadgeTier());

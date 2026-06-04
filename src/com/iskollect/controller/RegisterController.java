@@ -26,6 +26,14 @@ public class RegisterController {
     @FXML
     private void handleSignUp() {
         errorLabel.setText("");
+        if (nameField.getText().isBlank() || webmailField.getText().isBlank() || passwordField.getText().isBlank()) {
+            errorLabel.setText("Please fill in all fields.");
+            return;
+        }
+        if (!webmailField.getText().endsWith("@iskolarngbayan.pup.edu.ph")) {
+            errorLabel.setText("Please use your PUP webmail address.");
+            return;
+        }
         try {
             Student student = new Student(
                     nameField.getText(),

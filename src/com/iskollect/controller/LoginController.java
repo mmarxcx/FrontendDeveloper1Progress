@@ -24,6 +24,14 @@ public class LoginController {
     @FXML
     private void handleLogin() {
         errorLabel.setText("");
+        if (webmailField.getText().isBlank() || passwordField.getText().isBlank()) {
+            errorLabel.setText("Please fill in all fields.");
+            return;
+        }
+        if (!webmailField.getText().endsWith("@iskolarngbayan.pup.edu.ph")) {
+            errorLabel.setText("Please use your PUP webmail address.");
+            return;
+        }
         try {
             boolean success = authService.login(
                     webmailField.getText(),

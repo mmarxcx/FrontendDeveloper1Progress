@@ -19,11 +19,11 @@ public class AuthService {
             throws DatabaseException, InvalidInputException {
 
         //validation for inputs
-        if (student.getUsername().trim().isEmpty() || student.getWebmail().trim().isEmpty() || student.getPassword_hash().trim().isEmpty()) {
+        if (student.getUsername().trim().isEmpty() || student.getemail().trim().isEmpty() || student.getPassword_hash().trim().isEmpty()) {
             throw new InvalidInputException("All fields are required. Please fill out the form entirely.");
         }
 
-        if (!student.getWebmail().trim().endsWith("@iskolarngbayan.pup.edu.ph")) {
+        if (!student.getemail().trim().endsWith("@iskolarngbayan.pup.edu.ph")) {
             throw new InvalidInputException("Registration restricted to @iskolarngbayan.pup.edu.ph accounts.");
         }
 

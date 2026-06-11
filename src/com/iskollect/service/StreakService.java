@@ -21,8 +21,7 @@ public class StreakService {
 
     public double evaluateStreak(Student student, int bottles) throws DatabaseException {
         LocalDate today = LocalDate.now();
-        LocalDate lastSubmitDate = (student.getLastSubmitDate() != null) 
-    ? student.getLastSubmitDate().toLocalDate() : null;
+        LocalDate lastSubmitDate = student.getLastSubmitDate();
         int streak = student.getStreak();
 
         if (lastSubmitDate == null) {

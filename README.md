@@ -199,6 +199,25 @@ Java: Clean Java Language Server Workspace
 
 Then reload the window and allow Maven dependencies to be imported.
 
+## Running the Application (Windows)
+
+A launcher script is included so developers can start the app without typing Maven commands.
+
+1. Open the project folder in File Explorer.
+2. Double-click `run.bat`.
+3. The script will run `mvnw.cmd javafx:run` from the project root.
+4. If this is the first run, Maven Wrapper downloads the configured Maven version automatically.
+5. Leave the terminal open while the app is running.
+
+### Development Workflow with run.bat
+
+- Update code in `src/` (source) as needed.
+- Save changes in your editor.
+- **STOP RUNNING** the app and double-click `run.bat` again to rebuild and relaunch.
+- Use the existing terminal prompt that opens to view build or runtime messages.
+
+This launcher is intended as a convenience for developers and does not change the core application logic.
+
 ## Known Integration Notes
 
 - Authentication and registration are still treated as a separate module.

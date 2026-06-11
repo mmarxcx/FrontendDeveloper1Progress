@@ -221,14 +221,12 @@ public class StudentDAO {
         return ids;
     }
 
-    public void updateProfile(int studentId, String username, String course, int yearLevel) throws DatabaseException {
-        String query = "UPDATE students SET username = ?, course = ?, year_level = ? WHERE user_id = ?";
+    public void updateProfile(int studentId, String username) throws DatabaseException {
+        String query = "UPDATE students SET username = ? WHERE user_id = ?";
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, username);
-            pstmt.setString(2, course);
-            pstmt.setInt(3, yearLevel);
-            pstmt.setInt(4, studentId);
+            pstmt.setInt(2, studentId);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw new DatabaseException("Failed to update student profile.", e);

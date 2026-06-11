@@ -10,8 +10,6 @@ import javafx.scene.control.TextField;
 
 public class ProfileController {
     @FXML private TextField nameField;
-    @FXML private TextField courseField;
-    @FXML private TextField yearLevelField;
     @FXML private Label statusLabel;
 
     private final StudentDAO studentDAO = new StudentDAO();
@@ -23,8 +21,6 @@ public class ProfileController {
             return;
         }
         setField(nameField, student.getUsername());
-        setField(courseField, student.getCourse());
-        setField(yearLevelField, String.valueOf(student.getYearLevel()));
     }
 
     @FXML
@@ -35,12 +31,8 @@ public class ProfileController {
             return;
         }
         try {
-            int yearLevel = Integer.parseInt(yearLevelField.getText().trim());
-            studentDAO.updateProfile(student.getStudentId(), nameField.getText().trim(),
-                    courseField.getText().trim(), yearLevel);
+            studentDAO.updateProfile(student.getStudentId(), nameField.getText().trim());
             student.setUsername(nameField.getText().trim());
-            student.setCourse(courseField.getText().trim());
-            student.setYearLevel(yearLevel);
             setStatus("Profile updated.");
         } catch (NumberFormatException e) {
             setStatus("Year level must be a whole number.");

@@ -3,8 +3,6 @@ CREATE TABLE IF NOT EXISTS students (
     name VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    course VARCHAR(100) NOT NULL,
-    year_level INTEGER NOT NULL,
     total_points DOUBLE PRECISION NOT NULL DEFAULT 0,
     weekly_bottles INTEGER NOT NULL DEFAULT 0,
     streak INTEGER NOT NULL DEFAULT 0,

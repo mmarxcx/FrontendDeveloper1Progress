@@ -23,7 +23,7 @@ import java.util.List;
  *
  *   CREATE TABLE inout_logs (
  *       log_id       INTEGER       GENERATED ALWAYS AS IDENTITY,
- *       student_id   INT           NOT NULL,
+ *       user_id   INT           NOT NULL,
  *       event_type   VARCHAR(10)   NOT NULL,   -- 'INGRESS' | 'EGRESS'
  *       entry_method VARCHAR(20)   NOT NULL,   -- 'MANUAL'
  *       timestamp    TIMESTAMP     NOT NULL,
@@ -31,8 +31,8 @@ import java.util.List;
  *       status       VARCHAR(20)   NOT NULL,   -- 'VALID' | 'DUPLICATE' | 'UNRESOLVED'
  *       PRIMARY KEY (log_id)
  *       -- FK to students will be added by the Registration Module:
- *       -- CONSTRAINT fk_inout_student FOREIGN KEY (student_id)
- *       --     REFERENCES students(student_id) ON DELETE RESTRICT
+ *       -- CONSTRAINT fk_inout_student FOREIGN KEY (user_id)
+ *       --     REFERENCES students(user_id) ON DELETE RESTRICT
  *   );
  *
  * ──────────────────────────────────────────────────────────────────────
@@ -42,32 +42,32 @@ public class InOutLogDAO {
     // ── SQL statements ────────────────────────────────────────────────────
 
     private static final String SQL_INSERT =
-        "INSERT INTO inout_logs (student_id, event_type, entry_method, timestamp, staff_note, status) " +
+        "INSERT INTO inout_logs (user_id, event_type, entry_method, timestamp, staff_note, status) " +
         "VALUES (?, ?, ?, ?, ?, ?)";
 
     private static final String SQL_FIND_BY_ID =
         "SELECT * FROM inout_logs WHERE log_id = ?";
 
     private static final String SQL_GET_BY_STUDENT =
-        "SELECT * FROM inout_logs WHERE student_id = ? ORDER BY timestamp DESC";
+        "SELECT * FROM inout_logs WHERE user_id = ? ORDER BY timestamp DESC";
 
     private static final String SQL_GET_ALL =
         "SELECT * FROM inout_logs ORDER BY timestamp DESC";
 
     private static final String SQL_GET_BY_DATE_RANGE =
-        "SELECT * FROM inout_logs WHERE student_id = ? AND timestamp::date BETWEEN ? AND ? " +
+        "SELECT * FROM inout_logs WHERE user_id = ? AND timestamp::date BETWEEN ? AND ? " +
         "ORDER BY timestamp DESC";
 
     private static final String SQL_GET_LAST_EVENT =
-        "SELECT * FROM inout_logs WHERE student_id = ? ORDER BY timestamp DESC LIMIT 1";
+        "SELECT * FROM inout_logs WHERE user_id = ? ORDER BY timestamp DESC LIMIT 1";
 
     private static final String SQL_GET_LAST_EVENT_OF_TYPE =
-        "SELECT * FROM inout_logs WHERE student_id = ? AND event_type = ? " +
+        "SELECT * FROM inout_logs WHERE user_id = ? AND event_type = ? " +
         "ORDER BY timestamp DESC LIMIT 1";
 
     private static final String SQL_GET_RECENT_SAME_EVENT =
         "SELECT * FROM inout_logs " +
-        "WHERE student_id = ? AND event_type = ? " +
+        "WHERE user_id = ? AND event_type = ? " +
         "AND timestamp >= ? " +
         "ORDER BY timestamp DESC LIMIT 1";
 
@@ -225,6 +225,14 @@ public class InOutLogDAO {
         }
     }
 
+    public InOutLog getLastActivity(int studentId) throws DatabaseException {
+        return getLastEvent(studentId);
+    }
+
+    public void insertLastActivity(InOutLog log) throws DatabaseException {
+        insert(log);
+    }
+
     /**
      * Returns the most recent log of a specific type (INGRESS or EGRESS) for a student.
      * Used for duplicate detection.
@@ -315,7 +323,7 @@ public class InOutLogDAO {
     private InOutLog map(ResultSet rs) throws SQLException {
         return new InOutLog(
             rs.getInt("log_id"),
-            rs.getInt("student_id"),
+            rs.getInt("user_id"),
             EventType.valueOf(rs.getString("event_type")),
             EntryMethod.valueOf(rs.getString("entry_method")),
             rs.getTimestamp("timestamp").toLocalDateTime(),

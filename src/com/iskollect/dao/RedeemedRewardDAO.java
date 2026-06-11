@@ -20,7 +20,7 @@ public class RedeemedRewardDAO {
 
     public boolean insert(RedeemedReward r) throws DatabaseException {
         String sql = "INSERT INTO redeemed_rewards "
-                + "(student_id, reward_id, redeem_date, coupon_code, is_fulfilled, points_deducted) "
+                + "(user_id, reward_id, redeem_date, coupon_code, is_fulfilled, points_deducted) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, r.getStudentId());
@@ -44,7 +44,7 @@ public class RedeemedRewardDAO {
     public List<RedeemedReward> getByStudentId(int studentId) throws DatabaseException {
         String sql = "SELECT rr.*, r.name AS reward_name FROM redeemed_rewards rr "
                 + "JOIN rewards r ON rr.reward_id = r.reward_id "
-                + "WHERE rr.student_id = ? ORDER BY rr.redeem_date DESC, rr.redeem_id DESC";
+                + "WHERE rr.user_id = ? ORDER BY rr.redeem_date DESC, rr.redeem_id DESC";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setInt(1, studentId);
             return collect(ps);
@@ -89,7 +89,7 @@ public class RedeemedRewardDAO {
     private RedeemedReward map(ResultSet rs) throws SQLException {
         RedeemedReward reward = new RedeemedReward(
                 rs.getInt("redeem_id"),
-                rs.getInt("student_id"),
+                rs.getInt("user_id"),
                 rs.getInt("reward_id"),
                 rs.getDate("redeem_date").toLocalDate(),
                 rs.getString("coupon_code"),

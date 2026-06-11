@@ -12,7 +12,7 @@ public class LogResult {
     public enum Outcome {
         SUCCESS,       // Event recorded normally
         DUPLICATE,     // Same event type already logged within the duplicate window
-        STUDENT_NOT_FOUND, // student_id has no matching record (stub: always bypassed until registration module)
+        STUDENT_NOT_FOUND, // user_id has no matching record (stub: always bypassed until registration module)
         INVALID_INPUT, // studentId <= 0 or eventType is null
         DB_ERROR       // Unexpected database failure
     }

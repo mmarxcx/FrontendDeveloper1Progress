@@ -19,7 +19,7 @@ public class AuthService {
             throws DatabaseException, InvalidInputException {
 
         //validation for inputs
-        if (student.getUsername().trim().isEmpty() || student.getWebmail().trim().isEmpty() || student.getPassword().trim().isEmpty()) {
+        if (student.getUsername().trim().isEmpty() || student.getWebmail().trim().isEmpty() || student.getPassword_hash().trim().isEmpty()) {
             throw new InvalidInputException("All fields are required. Please fill out the form entirely.");
         }
 
@@ -27,13 +27,13 @@ public class AuthService {
             throw new InvalidInputException("Registration restricted to @iskolarngbayan.pup.edu.ph accounts.");
         }
 
-        if (student.getPassword().trim().length() < 8) {
+        if (student.getPassword_hash().trim().length() < 8) {
             throw new InvalidInputException("Password must be at least 8 characters long.");
         }
 
         String regex = "^(?=.*[0-9])(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]).*$";
 
-        if (!student.getPassword().trim().matches(regex)) {
+        if (!student.getPassword_hash().trim().matches(regex)) {
             throw new InvalidInputException("Password must include one number and one special character.");
         }
 
@@ -41,19 +41,19 @@ public class AuthService {
         return studentDAO.registerStudent(student);
     }
 
-    public boolean login(String webmail, String plainPassword) throws DatabaseException, InvalidInputException {
+    public boolean login(String email, String plainPassword) throws DatabaseException, InvalidInputException {
 
         //validation for inputs
-        if (webmail.isEmpty() || plainPassword.isEmpty()) {
+        if (email.isEmpty() || plainPassword.isEmpty()) {
             throw new InvalidInputException("All fields are required. Please fill out the form entirely.");
         }
 
-        if (!webmail.endsWith("@iskolarngbayan.pup.edu.ph")) {
-            throw new InvalidInputException("You must use an @iskolarngbayan.pup.edu.ph webmail.");
+        if (!email.endsWith("@iskolarngbayan.pup.edu.ph")) {
+            throw new InvalidInputException("You must use an @iskolarngbayan.pup.edu.ph email.");
         }
 
-        //checks if the inputted webmail exists
-        Student student = studentDAO.searchStudent(webmail);
+        //checks if the inputted email exists
+        Student student = studentDAO.searchStudent(email);
 
         if (student == null) {
             System.out.println("[AuthService] Authentication failed: Webmail not found.");
@@ -61,12 +61,12 @@ public class AuthService {
         }
 
         //compares the inputted password to the hashed password in the DB to check if the inputted password is correct
-        boolean isPasswordCorrect = PasswordUtil.checkPassword(plainPassword, student.getPassword());
+        boolean isPasswordCorrect = PasswordUtil.checkPassword(plainPassword, student.getPassword_hash());
 
         if (isPasswordCorrect) {
             //begins the session of the user
             SessionManager.setSession(student);
-            studentDAO.updateSessionToken(student.getUserID(), student.getSessionToken());
+            studentDAO.updateSessionToken(student.getStudentId(), student.getSessionToken());
             return true;
         }
 
@@ -78,7 +78,7 @@ public class AuthService {
         Student currentStudent = SessionManager.getSession();
         //clears the session and current token
         if (currentStudent != null) {
-            studentDAO.updateSessionToken(currentStudent.getUserID(), null);
+            studentDAO.updateSessionToken(currentStudent.getStudentId(), null);
         }
         SessionManager.clearSession();
     }

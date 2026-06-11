@@ -21,7 +21,7 @@ public class TransactionDAO {
 
     public boolean insert(Transaction t) throws DatabaseException {
         String sql = "INSERT INTO transactions "
-                + "(student_id, bottles, base_points, streak_bonus, badge_bonus, points, date) "
+                + "(user_id, bottles, base_points, streak_bonus, badge_bonus, points, date) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = conn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, t.getStudentId());
@@ -44,7 +44,7 @@ public class TransactionDAO {
     }
 
     public List<Transaction> getByStudentId(int studentId) throws DatabaseException {
-        String sql = "SELECT * FROM transactions WHERE student_id = ? ORDER BY date DESC, trans_id DESC";
+        String sql = "SELECT * FROM transactions WHERE user_id = ? ORDER BY date DESC, trans_id DESC";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setInt(1, studentId);
             return collect(ps);
@@ -54,7 +54,7 @@ public class TransactionDAO {
     }
 
     public List<Transaction> getByDateRange(int studentId, LocalDate from, LocalDate to) throws DatabaseException {
-        String sql = "SELECT * FROM transactions WHERE student_id = ? AND date BETWEEN ? AND ? "
+        String sql = "SELECT * FROM transactions WHERE user_id = ? AND date BETWEEN ? AND ? "
                 + "ORDER BY date DESC, trans_id DESC";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setInt(1, studentId);
@@ -67,7 +67,7 @@ public class TransactionDAO {
     }
 
     public int getTotalBottles(int studentId) throws DatabaseException {
-        String sql = "SELECT COALESCE(SUM(bottles), 0) FROM transactions WHERE student_id = ?";
+        String sql = "SELECT COALESCE(SUM(bottles), 0) FROM transactions WHERE user_id = ?";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setInt(1, studentId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -79,7 +79,7 @@ public class TransactionDAO {
     }
 
     public double getTotalPoints(int studentId) throws DatabaseException {
-        String sql = "SELECT COALESCE(SUM(points), 0) FROM transactions WHERE student_id = ?";
+        String sql = "SELECT COALESCE(SUM(points), 0) FROM transactions WHERE user_id = ?";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setInt(1, studentId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -103,7 +103,7 @@ public class TransactionDAO {
     private Transaction map(ResultSet rs) throws SQLException {
         return new Transaction(
                 rs.getInt("trans_id"),
-                rs.getInt("student_id"),
+                rs.getInt("user_id"),
                 rs.getInt("bottles"),
                 rs.getDouble("base_points"),
                 rs.getDouble("streak_bonus"),

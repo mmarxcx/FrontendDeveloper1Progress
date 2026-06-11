@@ -4,6 +4,7 @@ import com.iskollect.exception.DatabaseException;
 import com.iskollect.exception.DuplicateLogException;
 import com.iskollect.model.Student;
 import com.iskollect.dao.StudentDAO;
+import com.iskollect.service.InOutService;
 import com.iskollect.util.SessionManager;
 
 public class SecurityCheck {
@@ -21,7 +22,7 @@ public class SecurityCheck {
             return false;
         }
 
-        int userId = currentStudent.getUserID();
+        int userId = currentStudent.getStudentId();
 
         //check timeout expiry
         if (sessionService.isSessionExpired(userId)) {

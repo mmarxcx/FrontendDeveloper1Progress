@@ -36,7 +36,7 @@ public class DashboardController {
             return;
         }
         int studentId = student.getStudentId();
-        setText(nameLabel, student.getName());
+        setText(nameLabel, student.getUsername());
         setText(pointsLabel, String.valueOf(pointsService.getTotalPoints(studentId)));
         setText(badgeLabel, badgeService.getCurrentBadge(studentId).getTierName());
         setText(streakLabel, String.valueOf(streakService.getStreakCount(studentId)));

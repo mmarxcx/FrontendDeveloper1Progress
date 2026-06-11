@@ -31,7 +31,7 @@ public class RegisterController {
             return;
         }
         if (!webmailField.getText().endsWith("@iskolarngbayan.pup.edu.ph")) {
-            errorLabel.setText("Please use your PUP webmail address.");
+            errorLabel.setText("Please use your PUP email address.");
             return;
         }
         try {

@@ -22,7 +22,7 @@ public class ProfileController {
         if (student == null) {
             return;
         }
-        setField(nameField, student.getName());
+        setField(nameField, student.getUsername());
         setField(courseField, student.getCourse());
         setField(yearLevelField, String.valueOf(student.getYearLevel()));
     }
@@ -38,7 +38,7 @@ public class ProfileController {
             int yearLevel = Integer.parseInt(yearLevelField.getText().trim());
             studentDAO.updateProfile(student.getStudentId(), nameField.getText().trim(),
                     courseField.getText().trim(), yearLevel);
-            student.setName(nameField.getText().trim());
+            student.setUsername(nameField.getText().trim());
             student.setCourse(courseField.getText().trim());
             student.setYearLevel(yearLevel);
             setStatus("Profile updated.");

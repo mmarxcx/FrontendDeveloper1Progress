@@ -5,6 +5,7 @@ import com.iskollect.exception.DatabaseException;
 import com.iskollect.model.Student;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class StreakService {
@@ -20,7 +21,8 @@ public class StreakService {
 
     public double evaluateStreak(Student student, int bottles) throws DatabaseException {
         LocalDate today = LocalDate.now();
-        LocalDate lastSubmitDate = student.getLastSubmitDate();
+        LocalDate lastSubmitDate = (student.getLastSubmitDate() != null) 
+    ? student.getLastSubmitDate().toLocalDate() : null;
         int streak = student.getStreak();
 
         if (lastSubmitDate == null) {

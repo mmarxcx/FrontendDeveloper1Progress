@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 /**
  * Represents a single ingress or egress event logged by a staff member.
  *
- * NOTE — student_id is stored as a plain int with no FK enforcement yet.
+ * NOTE — user_id is stored as a plain int with no FK enforcement yet.
  * The foreign key constraint to the students table will be added once
  * the Student & Device Registration Module is complete.
  */
@@ -14,7 +14,7 @@ public class InOutLog {
     // ── Fields ────────────────────────────────────────────────────────────
 
     private int logId;               // PK — auto-incremented by DB
-    private int studentId;           // FK stub → students.student_id (unenforced until registration module)
+    private int studentId;           // FK stub → students.user_id (unenforced until registration module)
     private EventType eventType;     // INGRESS or EGRESS
     private EntryMethod entryMethod; // How the event was recorded (currently: MANUAL)
     private LocalDateTime timestamp; // Exact date-time of the event
@@ -54,6 +54,11 @@ public class InOutLog {
         this.timestamp   = timestamp;
         this.staffNote   = staffNote;
         this.status      = status;
+    }
+
+    /** Convenience constructor for activity tracking with a default valid ingress event. */
+    public InOutLog(int studentId, LocalDateTime timestamp) {
+        this(studentId, EventType.INGRESS, EntryMethod.MANUAL, timestamp, null, LogStatus.VALID);
     }
 
     /** Creation constructor — logId not yet assigned (DB will auto-increment). */

@@ -29,7 +29,7 @@ public class LoginController {
             return;
         }
         if (!webmailField.getText().endsWith("@iskolarngbayan.pup.edu.ph")) {
-            errorLabel.setText("Please use your PUP webmail address.");
+            errorLabel.setText("Please use your PUP email address.");
             return;
         }
         try {
@@ -40,7 +40,7 @@ public class LoginController {
             if (success) {
                 loadScreen("dashboard.fxml");
             } else {
-                errorLabel.setText("Incorrect webmail or password.");
+                errorLabel.setText("Incorrect email or password.");
             }
         } catch (InvalidInputException | DatabaseException e) {
             errorLabel.setText(e.getMessage());

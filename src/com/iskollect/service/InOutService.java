@@ -2,6 +2,7 @@ package com.iskollect.service;
 
 import com.iskollect.dao.InOutLogDAO;
 import com.iskollect.exception.DatabaseException;
+import com.iskollect.exception.DuplicateLogException;
 import com.iskollect.model.InOutLog;
 import com.iskollect.model.InOutLog.EntryMethod;
 import com.iskollect.model.InOutLog.EventType;
@@ -9,6 +10,7 @@ import com.iskollect.model.InOutLog.LogStatus;
 import com.iskollect.model.LogResult;
 import com.iskollect.util.StudentValidator;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -262,6 +264,42 @@ public class InOutService {
             System.err.println("getAllLogs failed: " + e.getMessage());
             return List.of();
         }
+    }
+
+    public void trackActivity(int studentId) throws DuplicateLogException, DatabaseException {
+        InOutLog lastLog = logDAO.getLastActivity(studentId);
+
+        if (lastLog != null) {
+            long secondsSinceLast = Duration.between(lastLog.getTimestamp(), LocalDateTime.now()).toSeconds();
+
+            if (secondsSinceLast < 30) {
+                throw new DuplicateLogException(lastLog.getStudentId(),
+                        "Activity tracking rejected: Duplicate log attempt within the 30s threshold.");
+            }
+        }
+
+        InOutLog newLog = new InOutLog(studentId, LocalDateTime.now());
+        logDAO.insertLastActivity(newLog);
+    }
+
+    public boolean isSessionExpired(int studentId) {
+        try {
+            InOutLog lastLog = logDAO.getLastActivity(studentId);
+            if (lastLog == null) return false;
+
+            long minutesIdle = Duration.between(lastLog.getTimestamp(), LocalDateTime.now()).toMinutes();
+            return minutesIdle >= 1;
+        } catch (DatabaseException e) {
+            System.err.println("isSessionExpired failed: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean isTimeExpired(LocalDateTime lastInteractionTime) {
+        if (lastInteractionTime == null) return false;
+
+        long minutesIdle = Duration.between(lastInteractionTime, LocalDateTime.now()).toMinutes();
+        return minutesIdle >= 1;
     }
 
     // ── UNRESOLVED handling ───────────────────────────────────────────────
